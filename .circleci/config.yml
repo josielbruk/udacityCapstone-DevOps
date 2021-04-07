@@ -97,8 +97,8 @@ jobs:
           name: Upload Docker Blue Image to hub
           command: |
             # cd ..
-            # pwd
-            # ls
+            pwd
+            ls
             # cd BlueEnvironment
             chmod +x ./upload_docker.sh
             ./upload_docker.sh
