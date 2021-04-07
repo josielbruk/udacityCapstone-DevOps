@@ -84,7 +84,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ./BlueEnvironment
-      - checkout
+      
       - setup_remote_docker
       - run:
           name: Load Docker image
