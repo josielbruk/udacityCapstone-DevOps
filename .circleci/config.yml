@@ -125,8 +125,11 @@ jobs:
       - run:
           # name: Create Blue AWS Kubernetes Environment
           command: |
-            # aws eks --region eu-west-2 update-kubeconfig \
-            # --name Kubernetes-devops-capstone
+            aws eks --region eu-west-2 update-kubeconfig \
+            --name Kubernetes-devops-capstone
+            AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+            AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+            AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION
             kubectl config use-context arn:aws:eks:eu-west-2:447576253070:cluster/Kubernetes-devops-capstone
             kubectl apply -f ./BlueDeployment/blueDeployment.yml
             kubectl apply -f ./BlueDeployment/service.yml
