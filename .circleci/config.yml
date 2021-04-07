@@ -76,7 +76,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - ./Dockerimage.tar
+            - BlueEnvironment/Dockerimage.tar
 
   upload-docker-Blue-Image:
     docker:
@@ -91,7 +91,7 @@ jobs:
           command: |
             pwd
             ls
-            docker load -i /tmp/workspace/Dockerimage.tar
+            docker load -i /tmp/workspace/BlueEnvironment/Dockerimage.tar
       - run:
           name: Upload Docker Blue Image to hub
           command: |
