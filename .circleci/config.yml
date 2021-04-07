@@ -1,6 +1,3 @@
-orbs:
-  docker: circleci/docker@1.5.0
-
 version: 2.1
 
 
@@ -23,6 +20,8 @@ jobs:
   lint-Blue-Environment:
     docker:
       - image: hadolint/hadolint:latest-debian
+    steps:
+      - checkout
       - run:
           name: Lint Blue Environment
           command: |
@@ -41,6 +40,8 @@ jobs:
   lint-Green-Environment:
     docker:
       - image: hadolint/hadolint:latest-debian
+    steps:
+      - checkout
       - run:
           name: Lint Green Environment
           command: |
@@ -60,6 +61,8 @@ jobs:
   build-Blue-Environment-Image:
     docker:
       - image: circleci/python:latest
+    steps:
+      - checkout
       - run:
         name: build Blue Environment
         command: |
@@ -70,6 +73,8 @@ jobs:
   upload-docker-Blue-Image:
     docker:
       - image: circleci/python:latest
+    steps:
+      - checkout
       - run:
         name: Upload Docker Blue Image
         command: |
@@ -80,6 +85,8 @@ jobs:
   create-Blue-AWS-kubernetes-Environment:
     docker:
       - image: amazon/aws-cli
+    steps:
+      - checkout
       - run:
         name: Create Blue AWS Kubernetes Environment
         command: |
