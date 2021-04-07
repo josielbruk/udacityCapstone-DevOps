@@ -112,8 +112,7 @@ jobs:
       - kubernetes/install
       - aws-eks/update-kubeconfig-with-authenticator:
           cluster-name: Kubernetes-devops-capstone
-      - kubernetes/create-or-update-resource:
-          get-rollout-status: true
+      - kubernetes/create-or-update-resource:          
           resource-file-path: BlueDeployment/blueDeployment.yml
           resource-name: BlueDeployment/blueDeployment
       - kubernetes/create-or-update-resource:
