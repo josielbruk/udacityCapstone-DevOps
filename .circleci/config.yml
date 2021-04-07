@@ -37,25 +37,25 @@ jobs:
             fi
             hadolint ./BlueEnvironment/Dockerfile
 
-  lint-Green-Environment:
-    docker:
-      - image: hadolint/hadolint:latest-debian
-    steps:
-      - checkout
-      - run:
-          name: Lint Green Environment
-          command: |
-            hadolint ./GreenEnvironment/Dockerfile | tee -a docker_lint_green.txt
-            checkLintGreen=`stat --printf="%s"  docker_lint_green.txt`
+  # lint-Green-Environment:
+  #   docker:
+  #     - image: hadolint/hadolint:latest-debian
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: Lint Green Environment
+  #         command: |
+  #           hadolint ./GreenEnvironment/Dockerfile | tee -a docker_lint_green.txt
+  #           checkLintGreen=`stat --printf="%s"  docker_lint_green.txt`
                     
-            if [ "$checkLintGreen" -gexit "0" ]
-            then
-                echo "Error"
-                exit 1
-            else
-                echo "Green Environment Successful"
-            fi
-            hadolint ./GreenEnvironment/Dockerfile
+  #           if [ "$checkLintGreen" -gexit "0" ]
+  #           then
+  #               echo "Error"
+  #               exit 1
+  #           else
+  #               echo "Green Environment Successful"
+  #           fi
+  #           hadolint ./GreenEnvironment/Dockerfile
 
       
   build-Blue-Environment-Image:
@@ -64,11 +64,11 @@ jobs:
     steps:
       - checkout
       - run:
-        name: build Blue Environment
-        command: |
-          ls 
-          cd ./BlueEnvironment
-          ./run_docker.sh
+          name: build Blue Environment
+          command: |
+            ls 
+            cd ./BlueEnvironment
+            ./run_docker.sh
 
   upload-docker-Blue-Image:
     docker:
@@ -76,11 +76,11 @@ jobs:
     steps:
       - checkout
       - run:
-        name: Upload Docker Blue Image
-        command: |
-          ls 
-          cd ./BlueEnvironment
-          ./upload_docker.sh
+          name: Upload Docker Blue Image
+          command: |
+            ls 
+            cd ./BlueEnvironment
+            ./upload_docker.sh
 
   create-Blue-AWS-kubernetes-Environment:
     docker:
@@ -88,17 +88,17 @@ jobs:
     steps:
       - checkout
       - run:
-        name: Create Blue AWS Kubernetes Environment
-        command: |
-          aws eks --region eu-west-2 update-kubeconfig \
-          --name Kubernetes-devops-capstone
-          kubectl config use-context arn:aws:eks:eu-west-2:447576253070:cluster/Kubernetes-devops-capstone
-          kubectl apply -f ./BlueDeployment/deployBlue.yml
-          kubectl apply -f ./BlueDeployment/service.yml
-          kubectl get nodes
-          kubectl get deployment
-          kubectl get pod -o wide
-          kubectl get services
+          name: Create Blue AWS Kubernetes Environment
+          command: |
+            aws eks --region eu-west-2 update-kubeconfig \
+            --name Kubernetes-devops-capstone
+            kubectl config use-context arn:aws:eks:eu-west-2:447576253070:cluster/Kubernetes-devops-capstone
+            kubectl apply -f ./BlueDeployment/deployBlue.yml
+            kubectl apply -f ./BlueDeployment/service.yml
+            kubectl get nodes
+            kubectl get deployment
+            kubectl get pod -o wide
+            kubectl get services
 
 
 
