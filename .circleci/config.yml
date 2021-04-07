@@ -105,24 +105,32 @@ jobs:
             chmod +x ./upload_docker.sh
             ./upload_docker.sh
 
-  create-Blue-AWS-kubernetes-Environment:
+  configure-Blue-AWS-kubernetes-Environment:
     executor: aws-eks/python3
     steps:
       - checkout
       - kubernetes/install
-      
+      - run:
+          name: install AWS cli
+          command: |
+            pip3 install awscli
       - run:
           name: Create Blue AWS Kubernetes Environment
           command: |
             aws eks --region eu-west-2 update-kubeconfig \
-            --name Kubernetes-devops-capstone
-            kubectl config use-context arn:aws:eks:eu-west-2:447576253070:cluster/Kubernetes-devops-capstone
-            kubectl apply -f ./BlueDeployment/deployBlue.yml
-            kubectl apply -f ./BlueDeployment/service.yml
-            kubectl get nodes
-            kubectl get deployment
-            kubectl get pod -o wide
-            kubectl get services
+            --name Kubernetes-devops-capstone 
+ 
+
+      -run:
+        name: Deploy Blue Environment
+        command: |
+          kubectl config use-context arn:aws:eks:eu-west-2:447576253070:cluster/Kubernetes-devops-capstone
+          kubectl apply -f ./BlueDeployment/deployBlue.yml
+          kubectl apply -f ./BlueDeployment/service.yml
+          kubectl get nodes
+          kubectl get deployment
+          kubectl get pod -o wide
+          kubectl get services
 
 
 
