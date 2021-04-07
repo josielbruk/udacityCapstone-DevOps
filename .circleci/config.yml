@@ -127,13 +127,13 @@ jobs:
           command: |
             aws eks --region eu-west-2 update-kubeconfig \
             --name Kubernetes-devops-capstone
-            # kubectl config use-context arn:aws:eks:eu-west-2:447576253070:cluster/Kubernetes-devops-capstone
-            # kubectl apply -f ./BlueDeployment/blueDeployment.yml
-            # kubectl apply -f ./BlueDeployment/service.yml
-            # kubectl get nodes
-            # kubectl get deployment
-            # kubectl get pod -o wide
-            # kubectl get services
+            kubectl config use-context arn:aws:eks:eu-west-2:447576253070:cluster/Kubernetes-devops-capstone
+            kubectl apply -f ./BlueDeployment/blueDeployment.yml
+            kubectl apply -f ./BlueDeployment/service.yml
+            kubectl get nodes
+            kubectl get deployment
+            kubectl get pod -o wide
+            kubectl get services
  
 
       # - run:
