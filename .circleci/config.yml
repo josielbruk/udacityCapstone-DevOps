@@ -83,7 +83,7 @@ jobs:
       - image: circleci/buildpack-deps:stretch
     steps:
       - attach_workspace:
-          at: ./BlueEnvironment
+          at: .
       
       - setup_remote_docker
       - run:
