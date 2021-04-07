@@ -1,11 +1,6 @@
 version: 2.1
 
-executors:
-  docker-publisher:
-    environment:
-      IMAGE_NAME: jonathancardoso/building-on-ci
-    docker:
-      - image: circleci/buildpack-deps:stretch
+
 
 jobs:
   # install-requirements:
@@ -66,7 +61,8 @@ jobs:
 
       
   build-Blue-Environment-Image:
-    executor: docker-publisher
+    docker:
+      - image: circleci/buildpack-deps:stretch
     steps:
       - checkout
       - setup_remote_docker
@@ -80,10 +76,11 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - ./Dockerimage.tar
+            - ./BlueEnvironment/Dockerimage.tar
 
   upload-docker-Blue-Image:
-    executor: docker-publisher
+    docker:
+      - image: circleci/buildpack-deps:stretch
     steps:
       - attach_workspace:
           at: /tmp/workspace
