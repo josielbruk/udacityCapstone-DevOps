@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  aws-eks: circleci/aws-eks@0.2.3
+  aws-eks: circleci/aws-eks@1.0.3
   kubernetes: circleci/kubernetes@0.4.0
 
 jobs:
@@ -112,28 +112,28 @@ jobs:
       - kubernetes/install
       - aws-eks/update-kubeconfig-with-authenticator:
           cluster-name: Kubernetes-devops-capstone
-      - kubernetes/create-or-update-resource:          
-          resource-file-path: BlueDeployment/blueDeployment.yml
-          resource-name: deployment/devops-capstone-blue
-      - kubernetes/create-or-update-resource:
-          resource-file-path: BlueDeployment/service.yml
-          resource-name: service/devops-capstone-blue 
+      # - kubernetes/create-or-update-resource:          
+      #     resource-file-path: BlueDeployment/blueDeployment.yml
+      #     resource-name: deployment/devops-capstone-blue
+      # - kubernetes/create-or-update-resource:
+      #     resource-file-path: BlueDeployment/service.yml
+      #     resource-name: service/devops-capstone-blue 
       # - run:
       #     name: install AWS cli
       #     command: |
       #       pip3 install awscli
-      # - run:
-      #     name: Create Blue AWS Kubernetes Environment
-      #     command: |
-      #       aws eks --region eu-west-2 update-kubeconfig \
-      #       --name Kubernetes-devops-capstone
-      #       # kubectl config use-context arn:aws:eks:eu-west-2:447576253070:cluster/Kubernetes-devops-capstone
-      #       # kubectl apply -f ./BlueDeployment/blueDeployment.yml
-      #       # kubectl apply -f ./BlueDeployment/service.yml
-      #       # kubectl get nodes
-      #       # kubectl get deployment
-      #       # kubectl get pod -o wide
-      #       # kubectl get services
+      - run:
+          name: Create Blue AWS Kubernetes Environment
+          command: |
+            aws eks --region eu-west-2 update-kubeconfig \
+            --name Kubernetes-devops-capstone
+            # kubectl config use-context arn:aws:eks:eu-west-2:447576253070:cluster/Kubernetes-devops-capstone
+            # kubectl apply -f ./BlueDeployment/blueDeployment.yml
+            # kubectl apply -f ./BlueDeployment/service.yml
+            # kubectl get nodes
+            # kubectl get deployment
+            # kubectl get pod -o wide
+            # kubectl get services
  
 
       # - run:
