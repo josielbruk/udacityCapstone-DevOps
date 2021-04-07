@@ -1,6 +1,8 @@
 version: 2.1
 
-
+orbs:
+  aws-eks: circleci/aws-eks@0.2.3
+  kubernetes: circleci/kubernetes@0.4.0
 
 jobs:
   # install-requirements:
@@ -104,19 +106,11 @@ jobs:
             ./upload_docker.sh
 
   create-Blue-AWS-kubernetes-Environment:
-    docker:
-      - image: amazon/aws-cli
+    executor: aws-eks/python3
     steps:
       - checkout
-      - run:
-          name: Install Kubernetes
-          command: |
-            curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
-            chmod +x ./kubectl
-            mv ./kubectl /usr/local/bin/kubectl
-      - run:
-          name: Install Kubernetes
-          command: |
+      - kubernetes/install
+      
       - run:
           name: Create Blue AWS Kubernetes Environment
           command: |
