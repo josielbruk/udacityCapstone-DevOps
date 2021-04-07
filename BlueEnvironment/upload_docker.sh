@@ -14,4 +14,6 @@ docker tag devops-capstone-blue $dockerpath
 docker login --username josielbr -p $DOCKER_PWD
 # Step 3:
 # Push image to a docker repository
-docker push /tmp/workspace/BlueEnvironment/josielbr/$dockerpath
+cd /tmp/workspace/BlueEnvironment/
+
+docker push josielbr/$dockerpath
