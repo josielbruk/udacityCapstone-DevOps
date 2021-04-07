@@ -106,5 +106,6 @@ workflows:
       - upload-docker-Blue-Image:
           requires: [build-Blue-Environment-Image]
       - create-Blue-AWS-kubernetes-Environment:
-          require: [upload-docker-Blue-Image]
+          requires: [upload-docker-Blue-Image]
+     
 
