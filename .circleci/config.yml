@@ -114,10 +114,10 @@ jobs:
           cluster-name: Kubernetes-devops-capstone
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
-          resource-file-path: ./BlueDeployment/blueDeployment.yml
-          resource-name: /BlueDeployment/blueDeployment
+          resource-file-path: BlueDeployment/blueDeployment.yml
+          resource-name: BlueDeployment/blueDeployment
       - kubernetes/create-or-update-resource:
-          resource-file-path: ./BlueDeployment/service.yml
+          resource-file-path: BlueDeployment/service.yml
           resource-name: service/blueDeployment-service
       # - run:
       #     name: install AWS cli
