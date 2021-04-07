@@ -110,6 +110,8 @@ jobs:
     steps:
       - checkout
       - kubernetes/install
+      - aws-eks/update-kubeconfig-with-authenticator:
+          cluster-name: Kubernetes-devops-capstone
       - run:
           name: install AWS cli
           command: |
