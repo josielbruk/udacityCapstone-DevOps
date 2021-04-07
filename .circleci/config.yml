@@ -60,7 +60,7 @@ jobs:
       
   build-Blue-Environment-Image:
     docker:
-      - image: circleci/python:latest
+      - image: circleci/buildpack-deps:stretch
     steps:
       - checkout
       - run:
@@ -72,7 +72,7 @@ jobs:
 
   upload-docker-Blue-Image:
     docker:
-      - image: circleci/python:latest
+      - image: circleci/buildpack-deps:stretch
     steps:
       - checkout
       - run:
