@@ -118,7 +118,7 @@ jobs:
           resource-name: BlueDeployment/blueDeployment
       - kubernetes/create-or-update-resource:
           resource-file-path: BlueDeployment/service.yml
-          resource-name: service/blueDeployment-service
+          resource-name: service/blueDeployment-service 
       # - run:
       #     name: install AWS cli
       #     command: |
