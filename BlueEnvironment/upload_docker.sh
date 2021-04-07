@@ -16,4 +16,4 @@ docker login --username josielbr -p $DOCKER_PWD
 # Push image to a docker repository
 cd /tmp/workspace/BlueEnvironment/
 
-docker push josielbr/$dockerpath
+docker push josielbr/$dockerpath:latest
