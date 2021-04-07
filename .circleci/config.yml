@@ -70,13 +70,13 @@ jobs:
           name: build Blue Environment
           command: |
             ls 
-            cd ./BlueEnvironment
+            cd BlueEnvironment
             chmod +x ./run_docker.sh
             ./run_docker.sh
       - persist_to_workspace:
           root: .
           paths:
-            - ./BlueEnvironment/Dockerimage.tar
+            - BlueEnvironment/Dockerimage.tar
 
   upload-docker-Blue-Image:
     docker:
@@ -94,9 +94,9 @@ jobs:
           command: |
             pwd
             ls
-            # cd ./BlueEnvironment
-            # chmod +x ./upload_docker.sh
-            # ./upload_docker.sh
+            cd BlueEnvironment
+            chmod +x ./upload_docker.sh
+            ./upload_docker.sh
 
   create-Blue-AWS-kubernetes-Environment:
     docker:
