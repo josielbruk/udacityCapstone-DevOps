@@ -24,6 +24,7 @@ jobs:
     docker:
       - image: hadolint/hadolint:latest-debian
       - run:
+          name: Lint Blue Environment
           command: |
             hadolint ./BlueEnvironment/Dockerfile | tee -a docker_lint_blue.txt
             checkLintBlue=`stat --printf="%s"  docker_lint_blue.txt`
@@ -41,6 +42,7 @@ jobs:
     docker:
       - image: hadolint/hadolint:latest-debian
       - run:
+          name: Lint Green Environment
           command: |
             hadolint ./GreenEnvironment/Dockerfile | tee -a docker_lint_green.txt
             checkLintGreen=`stat --printf="%s"  docker_lint_green.txt`
@@ -59,6 +61,7 @@ jobs:
     docker:
       - image: circleci/python:latest
       - run:
+        name: build Blue Environment
         command: |
           ls 
           cd ./BlueEnvironment
@@ -68,6 +71,7 @@ jobs:
     docker:
       - image: circleci/python:latest
       - run:
+        name: Upload Docker Blue Image
         command: |
           ls 
           cd ./BlueEnvironment
@@ -77,6 +81,7 @@ jobs:
     docker:
       - image: amazon/aws-cli
       - run:
+        name: Create Blue AWS Kubernetes Environment
         command: |
           aws eks --region eu-west-2 update-kubeconfig \
           --name Kubernetes-devops-capstone
