@@ -4,7 +4,7 @@ version: 2.1
 jobs:
   install-requirements:
     docker:
-      - image: circleci/python:latest
+      - image: python:3.7-alpine3.11
     steps:
       - checkout
       - run:
@@ -68,7 +68,7 @@ jobs:
           command: |
             ls 
             cd ./BlueEnvironment
-            ./run_docker.sh
+            sudo ./run_docker.sh
 
   upload-docker-Blue-Image:
     docker:
