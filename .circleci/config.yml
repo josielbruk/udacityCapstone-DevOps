@@ -114,10 +114,10 @@ jobs:
           cluster-name: Kubernetes-devops-capstone
       - kubernetes/create-or-update-resource:          
           resource-file-path: BlueDeployment/blueDeployment.yml
-          resource-name: BlueDeployment/blueDeployment
+          resource-name: deployment/devops-capstone-blue
       - kubernetes/create-or-update-resource:
           resource-file-path: BlueDeployment/service.yml
-          resource-name: service/blueDeployment-service 
+          resource-name: service/devops-capstone-blue 
       # - run:
       #     name: install AWS cli
       #     command: |
@@ -162,5 +162,11 @@ workflows:
           requires: [build-Blue-Environment-Image]
       - configure-Blue-AWS-kubernetes-Environment:
           requires: [upload-docker-Blue-Image]
+      - aws-eks/update-container-image:
+          cluster-name: Kubernetes-devops-capstone
+          container-image-updates: "devops-capstone-blue=josielbr/devops-capstone-blue"
+          resource-name: deployment/devops-capstone-blue
+          record: true
+          requires: [configure-Blue-AWS-kubernetes-Environment] 
      
 
