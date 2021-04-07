@@ -121,16 +121,16 @@ jobs:
             --name Kubernetes-devops-capstone 
  
 
-      -run:
-        name: Deploy Blue Environment
-        command: |
-          kubectl config use-context arn:aws:eks:eu-west-2:447576253070:cluster/Kubernetes-devops-capstone
-          kubectl apply -f ./BlueDeployment/deployBlue.yml
-          kubectl apply -f ./BlueDeployment/service.yml
-          kubectl get nodes
-          kubectl get deployment
-          kubectl get pod -o wide
-          kubectl get services
+      - run:
+          name: Deploy Blue Environment
+          command: |
+            kubectl config use-context arn:aws:eks:eu-west-2:447576253070:cluster/Kubernetes-devops-capstone
+            kubectl apply -f ./BlueDeployment/deployBlue.yml
+            kubectl apply -f ./BlueDeployment/service.yml
+            kubectl get nodes
+            kubectl get deployment
+            kubectl get pod -o wide
+            kubectl get services
 
 
 
