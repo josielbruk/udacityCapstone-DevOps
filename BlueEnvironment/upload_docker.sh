@@ -10,7 +10,7 @@ dockerpath="josielbr/devops-capstone-blue"
 # Step 2:  
 # Authenticate & tag
 echo "Docker ID and Image: $dockerpath"
-docker tag devops-capstone-blue $dockerpath
+docker image tag devops-capstone-blue $dockerpath
 docker login --username josielbr -p $DOCKER_PWD
 # Step 3:
 # Push image to a docker repository
