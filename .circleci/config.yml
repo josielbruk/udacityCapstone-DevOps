@@ -1,0 +1,90 @@
+orbs:
+  docker: circleci/docker@1.5.0
+
+version: 2.1
+
+
+jobs:
+  install-requirements:
+    docker:
+      - image: circleci/python:latest
+    steps:
+      - checkout
+      - run:
+          name: Install requirements
+          command: |
+            apk add --no-cache python3 py3-pip
+            python3 -m pip install awscli
+            curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
+            chmod +x ./kubectl
+            mv ./kubectl /usr/local/bin/kubectl
+            pip install pylint
+
+  lint Blue Environment:
+    docker:
+      - image: hadolint/hadolint:latest-debian
+      - run:
+          command: |
+            hadolint ./BlueEnvironment/Dockerfile | tee -a docker_lint_blue.txt
+            checkLintBlue=`stat --printf="%s"  docker_lint_blue.txt`
+                    
+            if [ "$checkLintBlue" -gexit "0" ]
+            then
+                echo "Error"
+                exit 1
+            else
+                echo "Blue Environment Successful"
+            fi
+            hadolint ./BlueEnvironment/Dockerfile
+
+  lint Green Environment:
+    docker:
+      - image: hadolint/hadolint:latest-debian
+      - run:
+          command: |
+            hadolint ./GreenEnvironment/Dockerfile | tee -a docker_lint_green.txt
+            checkLintGreen=`stat --printf="%s"  docker_lint_green.txt`
+                    
+            if [ "$checkLintGreen" -gexit "0" ]
+            then
+                echo "Error"
+                exit 1
+            else
+                echo "Green Environment Successful"
+            fi
+            hadolint ./GreenEnvironment/Dockerfile
+
+      
+  build Blue Environment Image:
+    docker:
+      - image: circleci/docker@1.5.0
+      - run:
+        command: |
+          ls 
+          cd ./BlueEnvironment
+          ./run_docker.sh
+
+  upload docker Blue Image:
+    docker:
+      - image: circleci/docker@1.5.0
+      - run:
+        command: |
+          ls 
+          cd ./BlueEnvironment
+          ./upload_docker.sh
+
+  create Blue AWS kubernetes Environment:
+    docker:
+      - image: amazon/aws-cli
+      - run:
+        command: |
+          aws eks --region eu-west-2 update-kubeconfig \
+          --name Kubernetes-devops-capstone
+          kubectl config use-context arn:aws:eks:eu-west-2:447576253070:cluster/Kubernetes-devops-capstone
+          kubectl apply -f ./BlueDeployment/deployBlue.yml
+          kubectl apply -f ./BlueDeployment/service.yml
+          kubectl get nodes
+          kubectl get deployment
+          kubectl get pod -o wide
+          kubectl get services
+
