@@ -83,12 +83,12 @@ jobs:
       - image: circleci/buildpack-deps:stretch
     steps:
       - attach_workspace:
-          at: /tmp/workspace
+          at: ./BlueEnvironment
       - checkout
       - setup_remote_docker
       - run:
           name: Load Docker image
-          command: docker load -i /tmp/workspace/Dockerimage.tar
+          command: docker load -i /BlueEnvironment/Dockerimage.tar
       - run:
           name: Upload Docker Blue Image
           command: |
