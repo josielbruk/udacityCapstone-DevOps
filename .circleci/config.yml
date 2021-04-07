@@ -69,8 +69,7 @@ jobs:
       - run:
           name: build Blue Environment
           command: |
-            ls
-            pwd 
+            ls 
             cd BlueEnvironment
             chmod +x ./run_docker.sh
             ./run_docker.sh
@@ -84,17 +83,17 @@ jobs:
       - image: circleci/buildpack-deps:stretch
     steps:
       - attach_workspace:
-          at: .
+          at: /tmp/workspace
       
       - setup_remote_docker
       - run:
           name: Load Docker image
-          command: docker load -i /BlueEnvironment/Dockerimage.tar
+          command: docker load -i /tmp/workspace/Dockerimage.tar
       - run:
           name: Upload Docker Blue Image to hub
           command: |
+            pwd
             ls
-            pwd            
             cd BlueEnvironment
             chmod +x ./upload_docker.sh
             ./upload_docker.sh
@@ -110,6 +109,9 @@ jobs:
             curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
             chmod +x ./kubectl
             mv ./kubectl /usr/local/bin/kubectl
+      - run:
+          name: Install Kubernetes
+          command: |
       - run:
           name: Create Blue AWS Kubernetes Environment
           command: |
