@@ -92,10 +92,10 @@ jobs:
       - run:
           name: Upload Docker Blue Image to hub
           command: |
-            ls 
-            
-            chmod +x ./upload_docker.sh
-            ./upload_docker.sh
+            pwd 
+            # cd ./BlueEnvironment
+            # chmod +x ./upload_docker.sh
+            # ./upload_docker.sh
 
   create-Blue-AWS-kubernetes-Environment:
     docker:
