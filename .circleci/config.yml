@@ -2,20 +2,21 @@ version: 2.1
 
 
 jobs:
-  install-requirements:
-    docker:
-      - image: python:3.7-alpine3.11
-    steps:
-      - checkout
-      - run:
-          name: Install requirements
-          command: |
-            apk add --no-cache python3 py3-pip
-            python3 -m pip install awscli
-            curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
-            chmod +x ./kubectl
-            mv ./kubectl /usr/local/bin/kubectl
-            pip install pylint
+  # install-requirements:
+  #   docker:
+  #     - image: python:3.7-alpine3.11
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: Install requirements
+  #         command: |
+  #           apk add --no-cache python3 py3-pip
+  #           apk add --update ansible curl
+  #           python3 -m pip install awscli
+  #           curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
+  #           chmod +x ./kubectl
+  #           mv ./kubectl /usr/local/bin/kubectl
+  #           pip install pylint
 
   lint-Blue-Environment:
     docker:
@@ -105,8 +106,9 @@ jobs:
 workflows:
   default:
     jobs:
-      - install-requirements
+      # - install-requirements
       - lint-Blue-Environment
+          # requires: [install-requirements]
       #- lint-Green-Environment
       - build-Blue-Environment-Image:
           requires: [lint-Blue-Environment]
