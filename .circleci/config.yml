@@ -69,6 +69,7 @@ jobs:
       - run:
           name: build Blue Environment
           command: |
+            pwd
             ls 
             cd BlueEnvironment
             chmod +x ./run_docker.sh
