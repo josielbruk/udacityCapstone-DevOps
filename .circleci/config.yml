@@ -96,6 +96,7 @@ jobs:
       - run:
           name: Upload Docker Blue Image to hub
           command: |
+            cd ..
             pwd
             ls
             cd BlueEnvironment
