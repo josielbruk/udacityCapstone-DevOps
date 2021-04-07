@@ -20,7 +20,7 @@ jobs:
             mv ./kubectl /usr/local/bin/kubectl
             pip install pylint
 
-  lint Blue Environment:
+  lint-Blue-Environment:
     docker:
       - image: hadolint/hadolint:latest-debian
       - run:
@@ -37,7 +37,7 @@ jobs:
             fi
             hadolint ./BlueEnvironment/Dockerfile
 
-  lint Green Environment:
+  lint-Green-Environment:
     docker:
       - image: hadolint/hadolint:latest-debian
       - run:
@@ -55,7 +55,7 @@ jobs:
             hadolint ./GreenEnvironment/Dockerfile
 
       
-  build Blue Environment Image:
+  build-Blue-Environment-Image:
     docker:
       - image: circleci/docker@1.5.0
       - run:
@@ -64,7 +64,7 @@ jobs:
           cd ./BlueEnvironment
           ./run_docker.sh
 
-  upload docker Blue Image:
+  upload-docker-Blue-Image:
     docker:
       - image: circleci/docker@1.5.0
       - run:
@@ -73,7 +73,7 @@ jobs:
           cd ./BlueEnvironment
           ./upload_docker.sh
 
-  create Blue AWS kubernetes Environment:
+  create-Blue-AWS-kubernetes-Environment:
     docker:
       - image: amazon/aws-cli
       - run:
@@ -87,4 +87,19 @@ jobs:
           kubectl get deployment
           kubectl get pod -o wide
           kubectl get services
+
+
+
+workflows:
+  default:
+    jobs:
+      - install-requirements
+      - lint-Blue-Environment
+      #- lint-Green-Environment
+      - build-Blue-Environment-Image:
+          requires: [lint-Blue-Environment]
+      - upload-docker-Blue-Image:
+          requires: [build-Blue-Environment-Image]
+      - create-Blue-AWS-kubernetes-Environment:
+          require: [upload-docker-Blue-Image]
 
