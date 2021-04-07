@@ -64,6 +64,7 @@ jobs:
       - image: circleci/buildpack-deps:stretch
     steps:
       - checkout
+      - setup_remote_docker
       - run:
           name: build Blue Environment
           command: |
@@ -77,6 +78,7 @@ jobs:
       - image: circleci/buildpack-deps:stretch
     steps:
       - checkout
+      - setup_remote_docker
       - run:
           name: Upload Docker Blue Image
           command: |
