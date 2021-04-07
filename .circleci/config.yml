@@ -76,7 +76,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - BlueEnvironment/Dockerimage.tar
+            - ./Dockerimage.tar
 
   upload-docker-Blue-Image:
     docker:
