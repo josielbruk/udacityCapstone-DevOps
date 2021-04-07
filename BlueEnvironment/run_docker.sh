@@ -10,4 +10,6 @@ docker build -t devops-capstone-blue .
 docker image ls
 # Step 3: 
 # Run flask app
-docker run -p 8000:80 devops-capstone-blue
+docker run -d -p 8000:80 devops-capstone-blue
+
+docker save -o Dockerimage.tar devops-capstone-blue

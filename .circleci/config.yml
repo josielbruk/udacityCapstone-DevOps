@@ -72,13 +72,22 @@ jobs:
             cd ./BlueEnvironment
             chmod +x ./run_docker.sh
             ./run_docker.sh
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./Dockerimage.tar
 
   upload-docker-Blue-Image:
     docker:
       - image: circleci/buildpack-deps:stretch
     steps:
+      - attach_workspace:
+          at: /tmp/workspace
       - checkout
       - setup_remote_docker
+      - run:
+          name: Load Docker image
+          command: docker load -i /tmp/workspace/Dockerimage.tar
       - run:
           name: Upload Docker Blue Image
           command: |
