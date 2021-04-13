@@ -3,7 +3,7 @@ version: 2.1
 parameters:
   MoveToProduction:
     type: boolean
-    default: True
+    default: False
 
 orbs:
   aws-eks: circleci/aws-eks@1.0.3
@@ -252,6 +252,7 @@ jobs:
     steps:
       - checkout
       - kubernetes/install
+      - run: echo $MoveToProduction
       - when: 
           condition: 
             equal: [$MoveToProduction == True]
@@ -262,7 +263,7 @@ jobs:
                       kubectl apply -f .GreenEnvironment/service.yml
                       kubectl get services
       - run: echo "Not time to move green to production"
-      - run: echo $MoveToProduction
+      
 
 workflows:
   default:
