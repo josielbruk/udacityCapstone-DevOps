@@ -270,7 +270,7 @@ jobs:
                       kubectl apply -f .GreenEnvironment/service.yml
                       kubectl get services
                   # else
-          - run:  echo "Not time to move green to production"
+          # - run:  echo "Not time to move green to production"
                   # fi
       
 
