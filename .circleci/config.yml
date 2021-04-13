@@ -3,7 +3,7 @@ version: 2.1
 parameters:
   MoveToProduction:
     type: boolean
-    default: false
+    default: true
 
 orbs:
   aws-eks: circleci/aws-eks@1.0.3
@@ -200,30 +200,30 @@ jobs:
   Deploy-Green:
     executor: aws-eks/python3
     steps:
-    - when:
-        condition:
-          equal: [ true, << pipeline.parameters.MoveToProduction >> ]
-        steps:
-          - kubernetes/install
-          - checkout
-          - run:
-              name: install AWS CLI
-              command: |
-                curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.0.30.zip" -o "awscliv2.zip"
-                unzip awscliv2.zip
-                sudo ./aws/install
-          - run:
-              name: Deploy Green
-              command: |
-                aws eks --region eu-west-2 update-kubeconfig \
-                --name UdacityCapstoneJosiel-Cluster
-                kubectl config use-context arn:aws:eks:eu-west-2:447576253070:cluster/UdacityCapstoneJosiel-Cluster
-                kubectl apply -f ./GreenEnvironment/GreenDeployment.yml
-                kubectl apply -f ./GreenEnvironment/service.yml
-                kubectl get nodes
-                kubectl get deployment
-                kubectl get pod -o wide
-                kubectl get services
+      - when:
+          condition:
+            equal: [ true, << pipeline.parameters.MoveToProduction >> ]
+          steps:
+            - kubernetes/install
+            - checkout
+            - run:
+                name: install AWS CLI
+                command: |
+                  curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.0.30.zip" -o "awscliv2.zip"
+                  unzip awscliv2.zip
+                  sudo ./aws/install
+            - run:
+                name: Deploy Green
+                command: |
+                  aws eks --region eu-west-2 update-kubeconfig \
+                  --name UdacityCapstoneJosiel-Cluster
+                  kubectl config use-context arn:aws:eks:eu-west-2:447576253070:cluster/UdacityCapstoneJosiel-Cluster
+                  kubectl apply -f ./GreenEnvironment/GreenDeployment.yml
+                  kubectl apply -f ./GreenEnvironment/service.yml
+                  kubectl get nodes
+                  kubectl get deployment
+                  kubectl get pod -o wide
+                  kubectl get services
      
   Change-from-blue-to-green:
     executor: aws-eks/python3
