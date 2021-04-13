@@ -165,6 +165,12 @@ jobs:
     steps:
       - checkout
       - kubernetes/install
+      - run:
+          name: list folders
+          command: |
+            pwd
+            ls
+            
       - aws-eks/update-kubeconfig-with-authenticator:
           cluster-name: UdacityCapStoneJosiel-Cluster
       - kubernetes/create-or-update-resource:
