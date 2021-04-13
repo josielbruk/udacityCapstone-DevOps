@@ -10,8 +10,10 @@ dockerpath="josielbr/devops-capstone-green"
 # Step 2:  
 # Authenticate & tag
 echo "Docker ID and Image: $dockerpath"
-docker tag devops-capstone-green $dockerpath
+docker image tag devops-capstone-green $dockerpath
 docker login --username josielbr
 # Step 3:
 # Push image to a docker repository
+cd /tmp/workspace/GreenEnvironment/
+
 docker push $dockerpath
