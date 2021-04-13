@@ -223,7 +223,7 @@ jobs:
             sudo ./aws/install
       - when:
           condition: 
-            equal: equal: [<< parameters.MoveToProduction >>, "True"]
+            equal: [<< parameters.MoveToProduction >>, "True"]
           steps:
             - run:
                 name: Deploy Green
