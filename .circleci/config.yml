@@ -221,28 +221,28 @@ jobs:
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.0.30.zip" -o "awscliv2.zip"
             unzip awscliv2.zip
             sudo ./aws/install
-      # - when:
-      #     condition: 
-      #       equal: [$MoveToProduction == True]
-      #     steps:
-      - run:
-          name: Deploy Green
-          command: | 
+      - when:
+          condition: 
+            equal: << parameters.MoveToProduction >>, "True"]
+          steps:
+            - run:
+                name: Deploy Green
+                command: | 
 
-              if ["$MoveToProduction" == "True"] 
-              then    
-                  aws eks --region eu-west-2 update-kubeconfig \
-                  --name UdacityCapstoneJosiel-Cluster
-                  kubectl config use-context arn:aws:eks:eu-west-2:447576253070:cluster/UdacityCapstoneJosiel-Cluster
-                  kubectl apply -f ./GreenEnvironment/GreenDeployment.yml
-                  kubectl apply -f ./GreenEnvironment/service.yml
-                  kubectl get nodes
-                  kubectl get deployment
-                  kubectl get pod -o wide
-                  kubectl get services
-              else
-                echo "Not time to move green to production"
-              fi
+                    if ["$MoveToProduction" == "True"] 
+                    # then    
+                        aws eks --region eu-west-2 update-kubeconfig \
+                        --name UdacityCapstoneJosiel-Cluster
+                        kubectl config use-context arn:aws:eks:eu-west-2:447576253070:cluster/UdacityCapstoneJosiel-Cluster
+                        kubectl apply -f ./GreenEnvironment/GreenDeployment.yml
+                        kubectl apply -f ./GreenEnvironment/service.yml
+                        kubectl get nodes
+                        kubectl get deployment
+                        kubectl get pod -o wide
+                        kubectl get services
+                    # else
+            - run: echo "Not time to move green to production"
+                    # fi
       # - aws-eks/update-kubeconfig-with-authenticator:
       #     cluster-name: UdacityCapStoneJosiel-Cluster
       # - kubernetes/create-or-update-resource:
@@ -257,17 +257,20 @@ jobs:
     steps:
       - checkout
       - kubernetes/install
-      - run: echo $MoveToProduction 
-      - run:
-          name: Change traffic from blue to green
-          command: |
-              if ["$MoveToProduction" == "True"] 
-              then                  
-                  kubectl apply -f .GreenEnvironment/service.yml
-                  kubectl get services
-              else
-                  echo "Not time to move green to production"
-              fi
+      - run: echo << parameters.MoveToProduction >> 
+       - when:
+          condition: 
+            equal: << parameters.MoveToProduction >>, "True"]
+          - run:
+              name: Change traffic from blue to green
+              command: |
+                  # if ["$MoveToProduction" == "True"] 
+                  # then                  
+                      kubectl apply -f .GreenEnvironment/service.yml
+                      kubectl get services
+                  # else
+          - run:  echo "Not time to move green to production"
+                  # fi
       
 
 workflows:
