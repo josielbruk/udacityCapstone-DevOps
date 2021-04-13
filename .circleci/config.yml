@@ -270,18 +270,17 @@ workflows:
       - Push-Green-Image:
           requires: [Build-Green-Deployment-Image]
       - Config-AWS-for-Green:
-            requires: [Push-Green-Image]
+          requires: [Push-Green-Image]
       - Deploy-Green:
-            requires: [Config-AWS-for-Green]
-      
-  conditional-workflow:
-    when:
-      condition: 
-            equal: [$MoveToProduction, True]
-    jobs:
+          requires: [Config-AWS-for-Green]
       - Change-from-blue-to-green:
-          requires: 
-            - default
+          when:
+          condition: 
+            equal: [$MoveToProduction, True]
+            requires: [Config-AWS-for-Green]
+
+  
+          
 
             
 
