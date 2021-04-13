@@ -2,8 +2,8 @@ version: 2.1
 
 parameters:
   MoveToProduction:
-    type: integer
-    default: 0
+    type: boolean
+    default: false
 
 orbs:
   aws-eks: circleci/aws-eks@1.0.3
@@ -202,7 +202,7 @@ jobs:
     steps:
       - when:
           condition:
-            equal: [ 1 , << pipeline.parameters.MoveToProduction >> ]
+            equal: [ true , << pipeline.parameters.MoveToProduction >> ]
           steps:
             - kubernetes/install
             - checkout
@@ -231,7 +231,7 @@ jobs:
     steps:
     - when:
         condition:
-          equal: [ 1 , << pipeline.parameters.MoveToProduction >> ]
+          equal: [ true , << pipeline.parameters.MoveToProduction >> ]
         steps:
           - checkout
           - kubernetes/install
