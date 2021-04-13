@@ -253,11 +253,8 @@ jobs:
       #     resource-name: service/devops-capstone-green
 
   Change-from-blue-to-green:
-    executor: aws-eks/python3
-    
-    
-       
-      - when:
+    executor: aws-eks/python3      
+      when:
         condition: 
           - equal: [ True, << pipeline.parameters.MoveToProduction >> ]
             steps:
