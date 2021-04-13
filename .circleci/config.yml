@@ -260,7 +260,7 @@ jobs:
        
       - when:
         condition: 
-          - equal: [<< parameters.MoveToProduction >>, "True"]
+          - equal: << parameters.MoveToProduction >> == "True"
         steps:
           - run:
               name: Change traffic from blue to green
