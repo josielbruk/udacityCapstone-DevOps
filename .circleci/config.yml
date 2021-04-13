@@ -275,7 +275,7 @@ workflows:
           requires: [Config-AWS-for-Green]
       - Change-from-blue-to-green:
           when: [$MoveToProduction, True]
-            requires: [Config-AWS-for-Green]
+          requires: [Deploy-Green]
 
   
           
