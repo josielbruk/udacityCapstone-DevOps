@@ -2,8 +2,8 @@ version: 2.1
 
 parameters:
   MoveToProduction:
-    type: boolean
-    default: True
+    type: string
+    default: "True"
 
 orbs:
   aws-eks: circleci/aws-eks@1.0.3
@@ -257,11 +257,7 @@ jobs:
     steps:
       - checkout
       - kubernetes/install
-      - run: echo $MoveToProduction
-      # - when: 
-      #     condition: 
-      #       equal: [$MoveToProduction == True]
-      #     steps:
+      - run: echo $MoveToProduction 
       - run:
           name: Change traffic from blue to green
           command: |
