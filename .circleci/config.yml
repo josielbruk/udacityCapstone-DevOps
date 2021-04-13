@@ -41,25 +41,25 @@ jobs:
             fi
             hadolint ./BlueEnvironment/Dockerfile
 
-  # lint-Green-Environment:
-  #   docker:
-  #     - image: hadolint/hadolint:latest-debian
-  #   steps:
-  #     - checkout
-  #     - run:
-  #         name: Lint Green Environment
-  #         command: |
-  #           hadolint ./GreenEnvironment/Dockerfile | tee -a docker_lint_green.txt
-  #           checkLintGreen=`stat --printf="%s"  docker_lint_green.txt`
+  lint-Green-Environment:
+    docker:
+      - image: hadolint/hadolint:latest-debian
+    steps:
+      - checkout
+      - run:
+          name: Lint Green Environment
+          command: |
+            hadolint ./GreenEnvironment/Dockerfile | tee -a docker_lint_green.txt
+            checkLintGreen=`stat --printf="%s"  docker_lint_green.txt`
                     
-  #           if [ "$checkLintGreen" -gexit "0" ]
-  #           then
-  #               echo "Error"
-  #               exit 1
-  #           else
-  #               echo "Green Environment Successful"
-  #           fi
-  #           hadolint ./GreenEnvironment/Dockerfile
+            if [ "$checkLintGreen" -gexit "0" ]
+            then
+                echo "Error"
+                exit 1
+            else
+                echo "Green Environment Successful"
+            fi
+            hadolint ./GreenEnvironment/Dockerfile
 
       
   build-Blue-Environment-Image:
