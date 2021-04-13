@@ -8,6 +8,7 @@ parameters:
 orbs:
   aws-eks: circleci/aws-eks@1.0.3
   kubernetes: circleci/kubernetes@0.4.0
+  
 
 jobs:  
 
@@ -98,6 +99,13 @@ jobs:
   Config-AWS-for-Blue:
     executor: aws-eks/python3
     steps:
+      - run: 
+          name: install AWS CLI
+          command: |
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.0.30.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+
       - run:
           name: Config AWS EKS for Blue
           command: |
@@ -112,6 +120,12 @@ jobs:
     steps:
       - checkout
       - kubernetes/install
+      - run: 
+          name: install AWS CLI
+          command: |
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.0.30.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
       - run:
           name: Deploy Blue
           command: |
@@ -265,7 +279,8 @@ workflows:
       condition: 
             equal: [$MoveToProduction, True]
     jobs:
-      - Change-from-blue-to-green
+      - Change-from-blue-to-green:
+
             
 
 
