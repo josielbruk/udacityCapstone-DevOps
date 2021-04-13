@@ -130,7 +130,7 @@ jobs:
           name: Deploy Blue
           command: |
               aws eks --region eu-west-2 update-kubeconfig \
-              --name UdacityCapStoneJosiel-Cluster
+              --name UdacityCapstoneJosiel-Cluster
               kubectl config use-context arn:aws:eks:eu-west-2:447576253070:cluster/UdacityCapStoneJosiel-Cluster
               kubectl apply -f ./BlueEnvironment/blueDeployment.yml
               kubectl apply -f ./BlueEnvironment/service.yml
@@ -196,6 +196,12 @@ jobs:
   Config-AWS-for-Green:
     executor: aws-eks/python3
     steps:
+      - run: 
+          name: install AWS CLI
+          command: |
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.0.30.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
       - run:
           name: Config AWS EKS for Green
           command: |
@@ -217,7 +223,7 @@ jobs:
                 name: Deploy Green
                 command: |          
                     aws eks --region eu-west-2 update-kubeconfig \
-                    --name UdacityCapStoneJosiel-Cluster
+                    --name UdacityCapstoneJosiel-Cluster
                     kubectl config use-context arn:aws:eks:eu-west-2:447576253070:cluster/UdacityCapStoneJosiel-Cluster
                     kubectl apply -f ./GreenEnvironment/GreenDeployment.yml
                     kubectl apply -f ./GreenEnvironment/service.yml
