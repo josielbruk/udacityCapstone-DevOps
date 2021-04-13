@@ -265,8 +265,8 @@ workflows:
       condition: 
             equal: [$MoveToProduction, True]
     jobs:
-      - Change-from-blue-to-green:
-            requires: [Deploy-Green]
+      - Change-from-blue-to-green
+            
 
 
 
