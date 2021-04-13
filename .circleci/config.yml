@@ -262,12 +262,10 @@ jobs:
                 - checkout
                 - kubernetes/install
                 - run:
-                  name: Change traffic from blue to green
-                  command: |                                    
-                    kubectl apply -f .GreenEnvironment/service.yml
-                    kubectl get services
-                  
-      
+                    name: Change traffic from blue to green
+                    command: |                                    
+                      kubectl apply -f .GreenEnvironment/service.yml
+                      kubectl get services
 
 workflows:
   default:
