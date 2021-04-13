@@ -300,9 +300,9 @@ workflows:
       #     requires: [Deploy-Green, Deploy-Blue]
           
 
-  conditional:
+  conditional-workflow:
     when: 
-      - equal: [True, << parameters.MoveToProduction >>]
+      - equal: [ true, << parameters.MoveToProduction >> ]
 
     jobs:
       - Deploy-Green:
