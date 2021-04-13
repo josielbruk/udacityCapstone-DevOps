@@ -80,6 +80,24 @@ jobs:
           root: .
           paths:
             - BlueEnvironment/Dockerimage.tar
+  build-Green-Environment-Image:
+    docker:
+      - image: circleci/buildpack-deps:stretch
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: build Green Environment
+          command: |
+            pwd
+            ls 
+            cd GreenEnvironment
+            chmod +x ./run_docker.sh
+            ./run_docker.sh
+      - persist_to_workspace:
+          root: .
+          paths:
+            - GreenEnvironment/Dockerimage.tar
 
   upload-docker-Blue-Image:
     docker:
@@ -158,14 +176,16 @@ jobs:
 
 workflows:
   default:
-    jobs:
-      # - install-requirements
-      - lint-Blue-Environment
-          # requires: [install-requirements]
-      #- lint-Green-Environment
+    jobs:      
+      - lint-Blue-Environment        
+      - lint-Green-Environment
+      - build-Green-Environment-Image:
+          requires: [lint-Green-Environment]
       - build-Blue-Environment-Image:
           requires: [lint-Blue-Environment]
       - upload-docker-Green-Image:
+          requires: [build-Green-Environment-Image]
+      - upload-docker-Blue-Image:
           requires: [build-Blue-Environment-Image]
       - Deploy-Green:
           requires: [upload-docker-Green-Image]
