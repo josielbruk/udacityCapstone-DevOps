@@ -256,8 +256,7 @@ jobs:
     executor: aws-eks/python3
     steps:      
       - when:
-          condition: 
-            - equal: [ True, << pipeline.parameters.MoveToProduction >> ]
+          condition: equal: [ True, << pipeline.parameters.MoveToProduction >> ]
           steps:
             - checkout
             - kubernetes/install
