@@ -118,7 +118,7 @@ Metadata:
           - NodeImageId
           - NodeVolumeSize
           - KeyName
-          - BootstrapArguments
+          - OnDemandBootstrapArguments
       - Label:
           default: "Worker Network Configuration"
         Parameters:

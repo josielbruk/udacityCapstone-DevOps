@@ -1,27 +1,17 @@
 version: 2.1
 
+parameters:
+  MoveToProduction:
+    type: boolean
+    default: False
+
 orbs:
   aws-eks: circleci/aws-eks@1.0.3
   kubernetes: circleci/kubernetes@0.4.0
 
-jobs:
-  # install-requirements:
-  #   docker:
-  #     - image: python:3.7-alpine3.11
-  #   steps:
-  #     - checkout
-  #     - run:
-  #         name: Install requirements
-  #         command: |
-  #           apk add --no-cache python3 py3-pip
-  #           apk add --update ansible curl
-  #           python3 -m pip install awscli
-  #           curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
-  #           chmod +x ./kubectl
-  #           mv ./kubectl /usr/local/bin/kubectl
-  #           pip install pylint
+jobs:  
 
-  lint-Blue-Environment:
+  Lint-Blue-Deployment-Dockerfile:
     docker:
       - image: hadolint/hadolint:latest-debian
     steps:
@@ -41,7 +31,7 @@ jobs:
             fi
             hadolint ./BlueEnvironment/Dockerfile
 
-  lint-Green-Environment:
+  Lint-Green-Deployment-Dockerfile:
     docker:
       - image: hadolint/hadolint:latest-debian
     steps:
@@ -62,7 +52,7 @@ jobs:
             hadolint ./GreenEnvironment/Dockerfile
 
       
-  build-Blue-Environment-Image:
+  Build-Blue-Deployment-Image:
     docker:
       - image: circleci/buildpack-deps:stretch
     steps:
@@ -80,26 +70,8 @@ jobs:
           root: .
           paths:
             - BlueEnvironment/Dockerimage.tar
-  build-Green-Environment-Image:
-    docker:
-      - image: circleci/buildpack-deps:stretch
-    steps:
-      - checkout
-      - setup_remote_docker
-      - run:
-          name: build Green Environment
-          command: |
-            pwd
-            ls 
-            cd GreenEnvironment
-            chmod +x ./run_docker.sh
-            ./run_docker.sh
-      - persist_to_workspace:
-          root: .
-          paths:
-            - GreenEnvironment/Dockerimage.tar
 
-  upload-docker-Blue-Image:
+  Push-Blue-Image:
     docker:
       - image: circleci/buildpack-deps:stretch
     steps:
@@ -123,7 +95,67 @@ jobs:
             chmod +x ./upload_docker.sh
             ./upload_docker.sh
 
-  upload-docker-Green-Image:
+  Config-AWS-for-Blue:
+    executor: aws-eks/python3
+    steps:
+      - run:
+          name: Config AWS EKS for Blue
+          command: |
+            aws eks update-kubeconfig \
+            --name UdacityCapstoneJosiel-Cluster \
+            --region eu-west-2 \
+            --role-arn arn:aws:iam::447576253070:role/eksClusterRole
+        
+
+  Deploy-Blue:
+    executor: aws-eks/python3
+    steps:
+      - checkout
+      - kubernetes/install
+      - run:
+          name: Deploy Blue
+          command: |
+              aws eks --region eu-west-2 update-kubeconfig \
+              --name UdacityCapStoneJosiel-Cluster
+              kubectl config use-context arn:aws:eks:eu-west-2:447576253070:cluster/UdacityCapStoneJosiel-Cluster
+              kubectl apply -f ./BlueEnvironment/blueDeployment.yml
+              kubectl apply -f ./BlueEnvironment/service.yml
+              kubectl get nodes
+              kubectl get deployment
+              kubectl get pod -o wide
+              kubectl get services
+
+      # - aws-eks/update-kubeconfig-with-authenticator:
+      #     cluster-name: UdacityCapStoneJosiel-Cluster
+      # - kubernetes/create-or-update-resource:
+      #     resource-file-path: BlueEnvironment/blueDeployment.yml
+      #     resource-name: deployment/devops-capstone-blue
+      # - kubernetes/create-or-update-resource:
+      #     resource-file-path: BlueEnvironment/service.yml
+      #     resource-name: service/devops-capstone-blue
+
+  Build-Green-Deployment-Image:
+    docker:
+      - image: circleci/buildpack-deps:stretch
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: build Green Environment
+          command: |
+            pwd
+            ls 
+            cd GreenEnvironment
+            chmod +x ./run_docker.sh
+            ./run_docker.sh
+      - persist_to_workspace:
+          root: .
+          paths:
+            - GreenEnvironment/Dockerimage.tar
+
+  
+
+  Push-Green-Image:
     docker:
       - image: circleci/buildpack-deps:stretch
     steps:
@@ -146,63 +178,112 @@ jobs:
             cd GreenEnvironment
             chmod +x ./upload_docker.sh
             ./upload_docker.sh
-  Deploy-Blue:
+  
+  Config-AWS-for-Green:
     executor: aws-eks/python3
     steps:
-      - checkout
-      - kubernetes/install
-      - aws-eks/update-kubeconfig-with-authenticator:
-          cluster-name: UdacityCapStoneJosiel-Cluster
-      - kubernetes/create-or-update-resource:
-          resource-file-path: BlueEnvironment/blueDeployment.yml
-          resource-name: deployment/devops-capstone-blue
-      - kubernetes/create-or-update-resource:
-          resource-file-path: BlueEnvironment/service.yml
-          resource-name: service/devops-capstone-blue
+      - run:
+          name: Config AWS EKS for Green
+          command: |
+            aws eks update-kubeconfig \
+            --name UdacityCapstoneJosiel-Cluster \
+            --region eu-west-2 \
+            --role-arn arn:aws:iam::447576253070:role/eksClusterRole
 
   Deploy-Green:
     executor: aws-eks/python3
     steps:
       - checkout
       - kubernetes/install
-      - run:
-          name: list folders
-          command: |
-            pwd
-            ls
-            cd GreenEnvironment
-            pwd
-            ls
-      - aws-eks/update-kubeconfig-with-authenticator:
-          cluster-name: UdacityCapStoneJosiel-Cluster
-      - kubernetes/create-or-update-resource:
-          resource-file-path: GreenEnvironment/GreenDeployment.yml
-          resource-name: deployment/devops-capstone-green
-      - kubernetes/create-or-update-resource:
-          resource-file-path: GreenEnvironment/service.yml
-          resource-name: service/devops-capstone-green
+      - when:
+          condition: 
+            equal: [$MoveToProduction, True]
+          steps:
+            - run:
+                name: Deploy Green
+                command: |          
+                    aws eks --region eu-west-2 update-kubeconfig \
+                    --name UdacityCapStoneJosiel-Cluster
+                    kubectl config use-context arn:aws:eks:eu-west-2:447576253070:cluster/UdacityCapStoneJosiel-Cluster
+                    kubectl apply -f ./GreenEnvironment/GreenDeployment.yml
+                    kubectl apply -f ./GreenEnvironment/service.yml
+                    kubectl get nodes
+                    kubectl get deployment
+                    kubectl get pod -o wide
+                    kubectl get services
+      - run: echo "Not time to move green to production"
+      # - aws-eks/update-kubeconfig-with-authenticator:
+      #     cluster-name: UdacityCapStoneJosiel-Cluster
+      # - kubernetes/create-or-update-resource:
+      #     resource-file-path: GreenEnvironment/GreenDeployment.yml
+      #     resource-name: deployment/devops-capstone-green
+      # - kubernetes/create-or-update-resource:
+      #     resource-file-path: GreenEnvironment/service.yml
+      #     resource-name: service/devops-capstone-green
+
+  Change-from-blue-to-green:
+    executor: aws-eks/python3
+    steps:
+      - checkout
+      - kubernetes/install
+      - when:
+          condition: 
+            equal: [$MoveToProduction, True]
+          steps:
+            - run:
+                name: Change traffic from blue to green
+                command: |                  
+                      kubectl apply -f .GreenEnvironment/service.yml
+                      kubectl get services
+      - run: echo "Not time to move green to production"
 
 workflows:
   default:
     jobs:      
-      # - lint-Blue-Environment        
-      - lint-Green-Environment
-      - build-Green-Environment-Image:
-          requires: [lint-Green-Environment]
-      # - build-Blue-Environment-Image:
-          # requires: [lint-Blue-Environment]
-      - upload-docker-Green-Image:
-          requires: [build-Green-Environment-Image]
-      # - upload-docker-Blue-Image:
-      #     requires: [build-Blue-Environment-Image]
+      - Lint-Blue-Deployment-Dockerfile        
+      - Lint-Green-Deployment-Dockerfile
+      - Build-Blue-Deployment-Image:
+          requires: [Lint-Blue-Deployment-Dockerfile]
+      - Push-Blue-Image:
+          requires: [Build-Blue-Deployment-Image]
+      - Config-AWS-for-Blue:
+          requires: [Push-Blue-Image]
+      - Deploy-Blue:
+          requires: [Config-AWS-for-Blue]
+
+      - Build-Green-Deployment-Image:
+          requires: [Lint-Green-Deployment-Dockerfile]
+      - Push-Green-Image:
+          requires: [uild-Green-Deployment-Image]
+      - Config-AWS-for-Green:
+            requires: [Push-Green-Image]
       - Deploy-Green:
-          requires: [upload-docker-Green-Image]
-      - aws-eks/update-container-image:
-          cluster-name: UdacityCapStoneJosiel-Cluster
-          container-image-updates: "devops-capstone-green=josielbr/devops-capstone-green"
-          resource-name: deployment/devops-capstone-green
-          record: true
-          requires: [Deploy-Green] 
+            requires: [Config-AWS-for-Green]
+      
+  conditional-workflow:
+    when:
+      condition: 
+            equal: [$MoveToProduction, True]
+    jobs:
+      - Change-from-blue-to-green:
+            requires: [Deploy-Green]
+
+
+
+      # - build-Blue-Environment-Image:
+      #     requires: [lint-Blue-Environment]
+      # - upload-docker-Green-Image:
+      #     requires: [build-Green-Environment-Image]
+      # # - upload-docker-Blue-Image:
+      # #     requires: [build-Blue-Environment-Image]
+      # - Deploy-Green:
+      #     requires: [upload-docker-Green-Image]
+      # - aws-eks/update-container-image:
+      #     cluster-name: UdacityCapStoneJosiel-Cluster
+      #     container-image-updates: "devops-capstone-green=josielbr/devops-capstone-green"
+      #     resource-name: deployment/devops-capstone-green
+      #     record: true
+      #     requires: [Deploy-Green] 
 
       
      
