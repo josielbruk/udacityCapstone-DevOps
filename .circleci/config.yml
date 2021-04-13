@@ -254,14 +254,16 @@ jobs:
 
   Change-from-blue-to-green:
     executor: aws-eks/python3
-    steps:
+    
       - checkout
       - kubernetes/install
        
-      when:
+    - when:
       condition: 
         - equal: [ True, << pipeline.parameters.MoveToProduction >> ]
           steps:
+            - checkout
+            - kubernetes/install
             - run:
                 name: Change traffic from blue to green
                 command: |
