@@ -261,16 +261,17 @@ jobs:
       - when:
         condition: 
           equal: [<< parameters.MoveToProduction >>, "True"]
-        - run:
-            name: Change traffic from blue to green
-            command: |
-                # if ["$MoveToProduction" == "True"] 
-                # then                  
-                    kubectl apply -f .GreenEnvironment/service.yml
-                    kubectl get services
-                # else
-        - run:  echo "Not time to move green to production"
-                # fi
+        steps:
+          - run:
+              name: Change traffic from blue to green
+              command: |
+                  # if ["$MoveToProduction" == "True"] 
+                  # then                  
+                      kubectl apply -f .GreenEnvironment/service.yml
+                      kubectl get services
+                  # else
+          - run:  echo "Not time to move green to production"
+                  # fi
       
 
 workflows:
