@@ -302,7 +302,7 @@ workflows:
 
   conditional-workflow:
     when: 
-      - equal: [ true, << parameters.MoveToProduction >> ]
+        - equal: [ true, << parameters.MoveToProduction >> ]
 
     jobs:
       - Deploy-Green:
