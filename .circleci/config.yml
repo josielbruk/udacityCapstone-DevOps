@@ -52,7 +52,6 @@ jobs:
             fi
             hadolint ./GreenEnvironment/Dockerfile
 
-      
   Build-Blue-Deployment-Image:
     docker:
       - image: circleci/buildpack-deps:stretch
@@ -114,7 +113,6 @@ jobs:
             --region eu-west-2 \
             --role-arn arn:aws:iam::447576253070:role/eksClusterRole
         
-
   Deploy-Blue:
     executor: aws-eks/python3
     steps:
@@ -137,16 +135,7 @@ jobs:
               kubectl get nodes
               kubectl get deployment
               kubectl get pod -o wide
-              kubectl get services
-
-      # - aws-eks/update-kubeconfig-with-authenticator:
-      #     cluster-name: UdacityCapStoneJosiel-Cluster
-      # - kubernetes/create-or-update-resource:
-      #     resource-file-path: BlueEnvironment/blueDeployment.yml
-      #     resource-name: deployment/devops-capstone-blue
-      # - kubernetes/create-or-update-resource:
-      #     resource-file-path: BlueEnvironment/service.yml
-      #     resource-name: service/devops-capstone-blue
+              kubectl get services     
 
   Build-Green-Deployment-Image:
     docker:
@@ -166,8 +155,6 @@ jobs:
           root: .
           paths:
             - GreenEnvironment/Dockerimage.tar
-
-  
 
   Push-Green-Image:
     docker:
@@ -238,18 +225,7 @@ jobs:
                   kubectl get deployment
                   kubectl get pod -o wide
                   kubectl get services
-              # else
-      # - run: echo "Not time to move green to production"
-                    # fi
-      # - aws-eks/update-kubeconfig-with-authenticator:
-      #     cluster-name: UdacityCapStoneJosiel-Cluster
-      # - kubernetes/create-or-update-resource:
-      #     resource-file-path: GreenEnvironment/GreenDeployment.yml
-      #     resource-name: deployment/devops-capstone-green
-      # - kubernetes/create-or-update-resource:
-      #     resource-file-path: GreenEnvironment/service.yml
-      #     resource-name: service/devops-capstone-green
-
+     
   Change-from-blue-to-green:
     executor: aws-eks/python3
     steps:      
@@ -298,41 +274,3 @@ workflows:
           requires: [Config-AWS-for-Green]
       - Change-from-blue-to-green:          
           requires: [Deploy-Green, Deploy-Blue]
-          
-
-  # conditional-workflow:
-  
-  #   when:
-  #     condition: 
-  #       - equal: [ True, << pipeline.parameters.MoveToProduction >> ]
-
-  #   jobs:
-  #     - Deploy-Green:
-  #         requires: [default.Config-AWS-for-Green]
-  #     - Change-from-blue-to-green:          
-  #         requires: [default.Deploy-Green, default.Deploy-Blue]
-  
-          
-
-            
-
-
-
-      # - build-Blue-Environment-Image:
-      #     requires: [lint-Blue-Environment]
-      # - upload-docker-Green-Image:
-      #     requires: [build-Green-Environment-Image]
-      # # - upload-docker-Blue-Image:
-      # #     requires: [build-Blue-Environment-Image]
-      # - Deploy-Green:
-      #     requires: [upload-docker-Green-Image]
-      # - aws-eks/update-container-image:
-      #     cluster-name: UdacityCapStoneJosiel-Cluster
-      #     container-image-updates: "devops-capstone-green=josielbr/devops-capstone-green"
-      #     resource-name: deployment/devops-capstone-green
-      #     record: true
-      #     requires: [Deploy-Green] 
-
-      
-     
-
