@@ -280,7 +280,8 @@ workflows:
             equal: [$MoveToProduction, True]
     jobs:
       - Change-from-blue-to-green:
-          requires: [default]
+          requires: 
+            - default
 
             
 
