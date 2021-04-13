@@ -215,6 +215,12 @@ jobs:
     steps:
       - checkout
       - kubernetes/install
+      - run: 
+          name: install AWS CLI
+          command: |
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.0.30.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
       - when:
           condition: 
             equal: [$MoveToProduction == True]
@@ -256,6 +262,7 @@ jobs:
                       kubectl apply -f .GreenEnvironment/service.yml
                       kubectl get services
       - run: echo "Not time to move green to production"
+      - run: echo $MoveToProduction
 
 workflows:
   default:
