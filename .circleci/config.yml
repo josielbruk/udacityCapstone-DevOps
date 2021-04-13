@@ -228,18 +228,16 @@ jobs:
           
             - run:
                 name: Deploy Green
-                command: | 
-
-                      
-                        aws eks --region eu-west-2 update-kubeconfig \
-                        --name UdacityCapstoneJosiel-Cluster
-                        kubectl config use-context arn:aws:eks:eu-west-2:447576253070:cluster/UdacityCapstoneJosiel-Cluster
-                        kubectl apply -f ./GreenEnvironment/GreenDeployment.yml
-                        kubectl apply -f ./GreenEnvironment/service.yml
-                        kubectl get nodes
-                        kubectl get deployment
-                        kubectl get pod -o wide
-                        kubectl get services
+                command: |                       
+                  aws eks --region eu-west-2 update-kubeconfig \
+                  --name UdacityCapstoneJosiel-Cluster
+                  kubectl config use-context arn:aws:eks:eu-west-2:447576253070:cluster/UdacityCapstoneJosiel-Cluster
+                  kubectl apply -f ./GreenEnvironment/GreenDeployment.yml
+                  kubectl apply -f ./GreenEnvironment/service.yml
+                  kubectl get nodes
+                  kubectl get deployment
+                  kubectl get pod -o wide
+                  kubectl get services
               # else
       # - run: echo "Not time to move green to production"
                     # fi
