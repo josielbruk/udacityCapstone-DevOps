@@ -252,7 +252,7 @@ Resources:
       VPCZoneIdentifier: !Ref Subnets
       Tags:
         - Key: Name
-          Value: !Sub "${ClusterName}-${OnDemandNodeGroupName}-Node"
+          Value: !Sub "${ClusterName}-Node"
           PropagateAtLaunch: "true"
         - Key: !Sub "kubernetes.io/cluster/${ClusterName}"
           Value: "owned"
