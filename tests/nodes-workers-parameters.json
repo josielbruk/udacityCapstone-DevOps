@@ -1,0 +1,34 @@
+[
+	{
+		"ParameterKey": "KeyName",
+		"ParameterValue": "UdacityCapstoneProject-Josiel-key"
+	},
+	{
+		"ParameterKey": "OnDemandBootstrapArguments",
+		"ParameterValue": "--kubelet-extra-args --node-labels=lifecycle=OnDemand"
+	},
+	{
+		"ParameterKey": "NodeImageId",
+		"ParameterValue": "ami-00247b7646db41c4f"
+	},
+	{
+		"ParameterKey": "OnDemandNodeInstanceType",
+		"ParameterValue": "t2.medium"
+	},
+	{
+		"ParameterKey": "ClusterName",
+		"ParameterValue": "UdacityCapStoneJosiel-Cluster"
+	},
+	{
+		"ParameterKey": "ClusterControlPlaneSecurityGroup",
+		"ParameterValue": "sg-0f82dde2ee214abca"
+	},
+	{
+		"ParameterKey": "VpcId",
+		"ParameterValue": "vpc-001cf9b9a96e66804"
+	},
+	{
+		"ParameterKey": "Subnets",
+		"ParameterValue": "subnet-0347e129d02411b08, subnet-0b0d6d4d7d1a3e614, subnet-0a76ed79c2af0e592"
+	}
+]

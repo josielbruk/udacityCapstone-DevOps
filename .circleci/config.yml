@@ -105,50 +105,33 @@ jobs:
             chmod +x ./upload_docker.sh
             ./upload_docker.sh
 
-  configure-Blue-AWS-kubernetes-Environment:
+  Deploy-Blue:
     executor: aws-eks/python3
     steps:
       - checkout
       - kubernetes/install
       - aws-eks/update-kubeconfig-with-authenticator:
-          cluster-name: Kubernetes-devops-capstone
-      # - kubernetes/create-or-update-resource:          
-      #     resource-file-path: BlueDeployment/blueDeployment.yml
-      #     resource-name: deployment/devops-capstone-blue
-      # - kubernetes/create-or-update-resource:
-      #     resource-file-path: BlueDeployment/service.yml
-      #     resource-name: service/devops-capstone-blue 
-      # - run:
-      #     name: install AWS cli
-      #     command: |
-      #       pip3 install awscli
-      - run:
-          # name: Create Blue AWS Kubernetes Environment
-          command: |
-            aws eks --region eu-west-2 update-kubeconfig \
-            --name Kubernetes-devops-capstone --role-arn arn:aws:iam::447576253070:role/eksClusterRole
-            
-            kubectl config use-context arn:aws:eks:eu-west-2:447576253070:cluster/Kubernetes-devops-capstone
-            kubectl apply -f ./BlueDeployment/blueDeployment.yml
-            kubectl apply -f ./BlueDeployment/service.yml
-            kubectl get nodes
-            kubectl get deployment
-            kubectl get pod -o wide
-            kubectl get services
- 
+          cluster-name: UdacityCapStoneJosiel-Cluster
+      - kubernetes/create-or-update-resource:
+          resource-file-path: BlueEnvironment/blueDeployment.yml
+          resource-name: deployment/devops-capstone-blue
+      - kubernetes/create-or-update-resource:
+          resource-file-path: BlueEnvironment/service.yml
+          resource-name: service/devops-capstone-blue
 
-      # - run:
-      #     name: Deploy Blue Environment
-      #     command: |
-      #       kubectl config use-context arn:aws:eks:eu-west-2:447576253070:cluster/Kubernetes-devops-capstone
-      #       kubectl apply -f ./BlueDeployment/deployBlue.yml
-      #       kubectl apply -f ./BlueDeployment/service.yml
-      #       kubectl get nodes
-      #       kubectl get deployment
-      #       kubectl get pod -o wide
-      #       kubectl get services
-
-
+  Deploy-Green:
+    executor: aws-eks/python3
+    steps:
+      - checkout
+      - kubernetes/install
+      - aws-eks/update-kubeconfig-with-authenticator:
+          cluster-name: UdacityCapStoneJosiel-Cluster
+      - kubernetes/create-or-update-resource:
+          resource-file-path: GreenEnvironment/greenDeployment.yml
+          resource-name: deployment/devops-capstone-green
+      - kubernetes/create-or-update-resource:
+          resource-file-path: GreenEnvironment/service.yml
+          resource-name: service/devops-capstone-green
 
 workflows:
   default:
@@ -161,13 +144,8 @@ workflows:
           requires: [lint-Blue-Environment]
       - upload-docker-Blue-Image:
           requires: [build-Blue-Environment-Image]
-      - configure-Blue-AWS-kubernetes-Environment:
+      - Deploy-Blue:
           requires: [upload-docker-Blue-Image]
-      - aws-eks/update-container-image:
-          cluster-name: Kubernetes-devops-capstone
-          container-image-updates: "devops-capstone-blue=josielbr/devops-capstone-blue"
-          resource-name: deployment/devops-capstone-blue
-          record: true
-          requires: [configure-Blue-AWS-kubernetes-Environment] 
+      
      
 
