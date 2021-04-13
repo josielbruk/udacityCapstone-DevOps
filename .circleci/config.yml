@@ -204,9 +204,9 @@ jobs:
           condition:
             equal: [ True, << pipeline.parameters.MoveToProduction >> ]
           steps:
-            - kubernetes/install
             - checkout
-            - run:
+            - kubernetes/install
+            - run: 
                 name: install AWS CLI
                 command: |
                   curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.0.30.zip" -o "awscliv2.zip"
