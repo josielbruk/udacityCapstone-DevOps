@@ -301,7 +301,8 @@ workflows:
           
 
   conditional-workflow:
-    when: 
+    when:
+      condition: 
         - equal: [ true, << parameters.MoveToProduction >> ]
 
     jobs:
