@@ -144,14 +144,14 @@ workflows:
           requires: [lint-Blue-Environment]
       - upload-docker-Blue-Image:
           requires: [build-Blue-Environment-Image]
-      - Deploy-Blue:
-          requires: [upload-docker-Blue-Image]
+      - Deploy-Green:
+          requires: [upload-docker-Green-Image]
       - aws-eks/update-container-image:
           cluster-name: UdacityCapStoneJosiel-Cluster
-          container-image-updates: "devops-capstone-blue=josielbr/devops-capstone-blue"
-          resource-name: deployment/devops-capstone-blue
+          container-image-updates: "devops-capstone-blue=josielbr/devops-capstone-green"
+          resource-name: deployment/devops-capstone-green
           record: true
-          requires: [Deploy-Blue] 
+          requires: [Deploy-Green] 
 
       
      
