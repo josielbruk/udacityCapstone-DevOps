@@ -177,16 +177,16 @@ jobs:
 workflows:
   default:
     jobs:      
-      - lint-Blue-Environment        
+      # - lint-Blue-Environment        
       - lint-Green-Environment
       - build-Green-Environment-Image:
           requires: [lint-Green-Environment]
-      - build-Blue-Environment-Image:
-          requires: [lint-Blue-Environment]
+      # - build-Blue-Environment-Image:
+          # requires: [lint-Blue-Environment]
       - upload-docker-Green-Image:
           requires: [build-Green-Environment-Image]
-      - upload-docker-Blue-Image:
-          requires: [build-Blue-Environment-Image]
+      # - upload-docker-Blue-Image:
+      #     requires: [build-Blue-Environment-Image]
       - Deploy-Green:
           requires: [upload-docker-Green-Image]
       - aws-eks/update-container-image:
