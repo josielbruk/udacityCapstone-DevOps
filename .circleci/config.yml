@@ -216,8 +216,7 @@ jobs:
       - checkout
       - kubernetes/install
       - when:
-          condition: 
-            equal: [$MoveToProduction, False]
+          condition: [$MoveToProduction == True]
           steps:
             - run:
                 name: Deploy Green
@@ -246,9 +245,7 @@ jobs:
     steps:
       - checkout
       - kubernetes/install
-      - when:
-          condition: 
-            equal: [$MoveToProduction, False]
+      - when: [$MoveToProduction == True]
           steps:
             - run:
                 name: Change traffic from blue to green
@@ -281,6 +278,7 @@ workflows:
           requires: [Config-AWS-for-Green]
       - Change-from-blue-to-green:          
           requires: [Deploy-Green]
+          requires: [Deploy-Blue]
 
   
           
