@@ -105,6 +105,29 @@ jobs:
             chmod +x ./upload_docker.sh
             ./upload_docker.sh
 
+  upload-docker-Green-Image:
+    docker:
+      - image: circleci/buildpack-deps:stretch
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Load Docker image
+          command: |
+            pwd
+            ls
+            docker load -i /tmp/workspace/GreenEnvironment/Dockerimage.tar
+      - run:
+          name: Upload Docker Blue Image to hub
+          command: |
+            # cd ..
+            pwd
+            ls
+            cd GreenEnvironment
+            chmod +x ./upload_docker.sh
+            ./upload_docker.sh
   Deploy-Blue:
     executor: aws-eks/python3
     steps:
