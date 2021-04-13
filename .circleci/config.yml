@@ -199,12 +199,12 @@ jobs:
 
   Deploy-Green:
     executor: aws-eks/python3
-    steps:      
+    steps:  
+      - checkout    
       - when:
           condition: 
             equal: [ True, << pipeline.parameters.MoveToProduction >> ]
-          steps:
-            - checkout
+          steps:            
             - kubernetes/install            
             - run: 
                 name: install AWS CLI
