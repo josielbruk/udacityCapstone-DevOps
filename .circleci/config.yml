@@ -280,8 +280,8 @@ workflows:
       - Deploy-Green:
           requires: [Config-AWS-for-Green]
       - Change-from-blue-to-green:          
-          requires: [Deploy-Green]
-          requires: [Deploy-Blue]
+          requires: [Deploy-Green, Deploy-Blue]
+          
 
   
           
