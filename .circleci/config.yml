@@ -224,7 +224,7 @@ jobs:
                 command: |          
                     aws eks --region eu-west-2 update-kubeconfig \
                     --name UdacityCapstoneJosiel-Cluster
-                    kubectl config use-context arn:aws:eks:eu-west-2:447576253070:cluster/UdacityCapStoneJosiel-Cluster
+                    kubectl config use-context arn:aws:eks:eu-west-2:447576253070:cluster/UdacityCapstoneJosiel-Cluster
                     kubectl apply -f ./GreenEnvironment/GreenDeployment.yml
                     kubectl apply -f ./GreenEnvironment/service.yml
                     kubectl get nodes
