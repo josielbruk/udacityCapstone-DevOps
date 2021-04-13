@@ -3,7 +3,7 @@ version: 2.1
 parameters:
   MoveToProduction:
     type: boolean
-    default: False
+    default: false
 
 orbs:
   aws-eks: circleci/aws-eks@1.0.3
