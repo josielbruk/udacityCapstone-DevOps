@@ -254,7 +254,7 @@ workflows:
       - Build-Green-Deployment-Image:
           requires: [Lint-Green-Deployment-Dockerfile]
       - Push-Green-Image:
-          requires: [uild-Green-Deployment-Image]
+          requires: [Build-Green-Deployment-Image]
       - Config-AWS-for-Green:
             requires: [Push-Green-Image]
       - Deploy-Green:
