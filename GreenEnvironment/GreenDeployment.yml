@@ -24,5 +24,5 @@ spec:
           imagePullPolicy: Always
           name: devops-capstone-green
           ports:
-            - containerPort: 30000
+            - containerPort: 30001
               name: http-server
