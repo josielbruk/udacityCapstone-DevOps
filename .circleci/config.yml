@@ -217,7 +217,7 @@ jobs:
       - kubernetes/install
       - when:
           condition: 
-            equal: [$MoveToProduction, True]
+            equal: [$MoveToProduction, False]
           steps:
             - run:
                 name: Deploy Green
@@ -248,7 +248,7 @@ jobs:
       - kubernetes/install
       - when:
           condition: 
-            equal: [$MoveToProduction, True]
+            equal: [$MoveToProduction, False]
           steps:
             - run:
                 name: Change traffic from blue to green
