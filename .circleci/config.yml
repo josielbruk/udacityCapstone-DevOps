@@ -301,6 +301,10 @@ workflows:
           
 
   conditional-workflow:
+  parameters:
+    MoveToProduction:
+      type: boolean
+      default: True
     when:
       condition: 
         - equal: [ True, << parameters.MoveToProduction >> ]
