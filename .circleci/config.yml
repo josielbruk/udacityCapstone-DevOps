@@ -202,7 +202,7 @@ jobs:
     steps:
     - when:
         condition:
-          equal: [ True, << pipeline.parameters.MoveToProduction >> ]
+          equal: [ true, << pipeline.parameters.MoveToProduction >> ]
         steps:
           - kubernetes/install
           - checkout
@@ -230,7 +230,7 @@ jobs:
     steps:
     - when:
         condition:
-          equal: [ True, << pipeline.parameters.MoveToProduction >> ]
+          equal: [ true, << pipeline.parameters.MoveToProduction >> ]
         steps:
           - checkout
           - kubernetes/install
