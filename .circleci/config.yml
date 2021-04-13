@@ -223,7 +223,7 @@ jobs:
             sudo ./aws/install
       - when:
           condition: 
-            - equal: << parameters.MoveToProduction >> == "True"
+            - equal: [True, << parameters.MoveToProduction >>]
           steps:
             - run:
                 name: Deploy Green
@@ -260,7 +260,7 @@ jobs:
        
       - when:
         condition: 
-          - equal: << parameters.MoveToProduction >> == "True"
+          - equal: [True, << parameters.MoveToProduction >>]
         steps:
           - run:
               name: Change traffic from blue to green
