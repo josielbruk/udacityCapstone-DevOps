@@ -308,9 +308,9 @@ workflows:
 
     jobs:
       - Deploy-Green:
-          requires: [Config-AWS-for-Green]
+          requires: [default.Config-AWS-for-Green]
       - Change-from-blue-to-green:          
-          requires: [Deploy-Green, Deploy-Blue]
+          requires: [default.Deploy-Green, default.Deploy-Blue]
   
           
 
