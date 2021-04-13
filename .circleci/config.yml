@@ -273,8 +273,7 @@ workflows:
           requires: [Push-Green-Image]
       - Deploy-Green:
           requires: [Config-AWS-for-Green]
-      - Change-from-blue-to-green:
-          when: [$MoveToProduction, True]
+      - Change-from-blue-to-green:          
           requires: [Deploy-Green]
 
   
