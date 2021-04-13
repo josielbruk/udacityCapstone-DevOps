@@ -8,6 +8,7 @@ spec:
   type: LoadBalancer
   selector:
     app: devops-capstone-blue
+  type: LoadBalancer
   ports:
     - port: 80
       targetPort: 80
