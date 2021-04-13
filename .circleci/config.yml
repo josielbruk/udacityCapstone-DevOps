@@ -146,6 +146,13 @@ workflows:
           requires: [build-Blue-Environment-Image]
       - Deploy-Blue:
           requires: [upload-docker-Blue-Image]
+      - aws-eks/update-container-image:
+          cluster-name: UdacityCapStoneJosiel-Cluster
+          container-image-updates: "josielbr/devops-capstone-blue"
+          resource-name: deployment/devops-capstone-blue
+          record: true
+          requires: [Deploy-Blue] 
+
       
      
 
