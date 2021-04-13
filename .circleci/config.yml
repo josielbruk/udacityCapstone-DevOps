@@ -165,7 +165,7 @@ workflows:
       #- lint-Green-Environment
       - build-Blue-Environment-Image:
           requires: [lint-Blue-Environment]
-      - upload-docker-Blue-Image:
+      - upload-docker-Green-Image:
           requires: [build-Blue-Environment-Image]
       - Deploy-Green:
           requires: [upload-docker-Green-Image]
