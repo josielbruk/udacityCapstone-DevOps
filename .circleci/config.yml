@@ -203,18 +203,18 @@ jobs:
       - when:
           condition:
             equal: [ True, << pipeline.parameters.MoveToProduction >> ]
-          steps:            
+          steps:
             - kubernetes/install
             - checkout
-            - run: 
+            - run:
                 name: install AWS CLI
                 command: |
                   curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.0.30.zip" -o "awscliv2.zip"
                   unzip awscliv2.zip
-                  sudo ./aws/install          
+                  sudo ./aws/install
             - run:
                 name: Deploy Green
-                command: |                       
+                command: |
                   aws eks --region eu-west-2 update-kubeconfig \
                   --name UdacityCapstoneJosiel-Cluster
                   kubectl config use-context arn:aws:eks:eu-west-2:447576253070:cluster/UdacityCapstoneJosiel-Cluster
@@ -227,9 +227,9 @@ jobs:
      
   Change-from-blue-to-green:
     executor: aws-eks/python3
-    steps:      
+    steps:
       - when:
-          condition: 
+          condition:
             equal: [ True, << pipeline.parameters.MoveToProduction >> ]
           steps:
             - checkout
