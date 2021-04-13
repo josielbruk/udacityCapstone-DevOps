@@ -268,7 +268,8 @@ workflows:
           requires: [Build-Green-Deployment-Image]
       - Config-AWS-for-Green:
           requires: [Push-Green-Image]
-      - Deploy-Green:
-          requires: [Config-AWS-for-Green]
+      # - Deploy-Green:
+      #     requires: [Config-AWS-for-Green]
       - Change-from-blue-to-green:          
-          requires: [Deploy-Green, Deploy-Blue]
+          requires: [Deploy-Blue]
+          # requires: [Deploy-Green, Deploy-Blue]
