@@ -258,20 +258,20 @@ jobs:
       - checkout
       - kubernetes/install
        
-      # - when:
-      #   condition: 
-      #     - equal: [True, << parameters.MoveToProduction >>]
-      #   steps:
-      - run:
-          name: Change traffic from blue to green
-          command: |
-              # if ["$MoveToProduction" == "True"] 
-              # then                  
-                  kubectl apply -f .GreenEnvironment/service.yml
-                  kubectl get services
-              # else
-          # - run:  echo "Not time to move green to production"
-                  # fi
+      when:
+      condition: 
+        - equal: [ True, << pipeline.parameters.MoveToProduction >> ]
+          steps:
+            - run:
+                name: Change traffic from blue to green
+                command: |
+                    # if ["$MoveToProduction" == "True"] 
+                    # then                  
+                        kubectl apply -f .GreenEnvironment/service.yml
+                        kubectl get services
+                    # else
+                # - run:  echo "Not time to move green to production"
+                        # fi
       
 
 workflows:
@@ -294,23 +294,23 @@ workflows:
           requires: [Build-Green-Deployment-Image]
       - Config-AWS-for-Green:
           requires: [Push-Green-Image]
-      # - Deploy-Green:
-      #     requires: [Config-AWS-for-Green]
-      # - Change-from-blue-to-green:          
-      #     requires: [Deploy-Green, Deploy-Blue]
+      - Deploy-Green:
+          requires: [Config-AWS-for-Green]
+      - Change-from-blue-to-green:          
+          requires: [Deploy-Green, Deploy-Blue]
           
 
-  conditional-workflow:
+  # conditional-workflow:
   
-    when:
-      condition: 
-        - equal: [ True, << pipeline.parameters.MoveToProduction >> ]
+  #   when:
+  #     condition: 
+  #       - equal: [ True, << pipeline.parameters.MoveToProduction >> ]
 
-    jobs:
-      - Deploy-Green:
-          requires: [default.Config-AWS-for-Green]
-      - Change-from-blue-to-green:          
-          requires: [default.Deploy-Green, default.Deploy-Blue]
+  #   jobs:
+  #     - Deploy-Green:
+  #         requires: [default.Config-AWS-for-Green]
+  #     - Change-from-blue-to-green:          
+  #         requires: [default.Deploy-Green, default.Deploy-Blue]
   
           
 
