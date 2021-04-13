@@ -258,14 +258,14 @@ jobs:
       - when:
           condition: 
             - equal: [ True, << pipeline.parameters.MoveToProduction >> ]
-              steps:
-                - checkout
-                - kubernetes/install
-                - run:
-                    name: Change traffic from blue to green
-                    command: |                                    
-                      kubectl apply -f .GreenEnvironment/service.yml
-                      kubectl get services
+          steps:
+            - checkout
+            - kubernetes/install
+            - run:
+                name: Change traffic from blue to green
+                command: |                                    
+                  kubectl apply -f .GreenEnvironment/service.yml
+                  kubectl get services
 
 workflows:
   default:
