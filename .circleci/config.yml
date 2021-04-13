@@ -257,7 +257,7 @@ jobs:
     steps:
       - checkout
       - kubernetes/install
-      - run: echo << parameters.MoveToProduction >> 
+       
       - when:
         condition: 
           equal: [<< parameters.MoveToProduction >>, "True"]
