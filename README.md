@@ -35,9 +35,13 @@ Build AWS Cluster
 
 `aws cloudformation create-stack --stack-name UdacityCapstoneJosiel --template-body file://cluster.yml --parameters file://cluster-parameters.json --capabilities CAPABILITY_IAM`
 
+![picture alt](https://github.com/josielbruk/udacityCapstone-DevOps/blob/master/SupportFiles/01%20-%20Cloudformation-UdacityCapstoneJosiel-stack.png)
+
 Build Workers on AWS
 
 `aws cloudformation create-stack --stack-name UdacityCapstoneJosiel-workers --template-body file://nodes-workers.yml --parameters file://nodes-workers-parameters.json --capabilities CAPABILITY_IAM`
+
+![picture alt](https://github.com/josielbruk/udacityCapstone-DevOps/blob/master/SupportFiles/02%20-%20Cloudformation-UdacityCapstoneJosiel-workers-stack.png)
 
 Configure kubectl with the newly created Cluster
 
@@ -47,6 +51,8 @@ Next step is the Cluster authentication that is done with the file [scripts/aws-
 
 # Pipeline
 
+![picture alt](https://github.com/josielbruk/udacityCapstone-DevOps/blob/master/SupportFiles/04%20-%20Circleci%20Pipeline.png)
+
 Assuming you have already setup the your project on github and on the circleci and this with your Environment Variables: 
 * AWS_ACCESS_KEY_ID
 * AWS_DEFAULT_REGION
@@ -55,3 +61,5 @@ Assuming you have already setup the your project on github and on the circleci a
 * DOCKER_USERNAME	
 
 on the [.circleci/config.yml](https://github.com/josielbruk/udacityCapstone-DevOps/blob/master/.circleci/config.yml) there is an environment variable: MoveToProduction, when set to false the latest Blue docker image [devops-capstone-blue]( https://hub.docker.com/repository/docker/josielbr/devops-capstone-blue) is deployed. When set to true the latest Green docker image [devops-capstone-green](https://hub.docker.com/repository/docker/josielbr/devops-capstone-green) is deployed.
+
+Therefore every commit on Github will cause the pipeline to update the docker image and deploy it to AWS.
