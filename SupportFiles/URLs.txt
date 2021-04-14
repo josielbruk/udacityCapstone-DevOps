@@ -1,0 +1,3 @@
+GitHub Repo: https://github.com/josielbruk/udacityCapstone-DevOps/tree/master
+loadbalance
+abd87befbc2194547a4e4fa2c7b40295-214393643.eu-west-2.elb.amazonaws.com
