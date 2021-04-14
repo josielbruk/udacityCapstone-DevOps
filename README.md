@@ -54,4 +54,4 @@ Assuming you have already setup the your project on github and on the circleci a
 * DOCKER_PWD
 * DOCKER_USERNAME	
 
-on the [.circleci/config.yml](https://github.com/josielbruk/udacityCapstone-DevOps/blob/master/.circleci/config.yml) there is an environment variable: MoveToProduction, when set to false the latest Blue docker image [devops-capstone-blue]( https://hub.docker.com/repository/docker/josielbr/devops-capstone-blue) is deployed. When set to true the latest Green docker image [devops-capstone-green] (https://hub.docker.com/repository/docker/josielbr/devops-capstone-green) is deployed.
+on the [.circleci/config.yml](https://github.com/josielbruk/udacityCapstone-DevOps/blob/master/.circleci/config.yml) there is an environment variable: MoveToProduction, when set to false the latest Blue docker image [devops-capstone-blue]( https://hub.docker.com/repository/docker/josielbr/devops-capstone-blue) is deployed. When set to true the latest Green docker image [devops-capstone-green](https://hub.docker.com/repository/docker/josielbr/devops-capstone-green) is deployed.
