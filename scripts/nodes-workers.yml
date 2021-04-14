@@ -7,7 +7,7 @@ Parameters:
   ClusterControlPlaneSecurityGroup:
     Type: "AWS::EC2::SecurityGroup::Id"
     Description: The security group of the cluster control plane.
-    
+
   KeyName:
     Description: The EC2 Key Pair to allow SSH access to the instances
     Type: AWS::EC2::KeyPair::KeyName
@@ -305,3 +305,4 @@ Outputs:
   NodeInstanceRole:
     Description: The node instance role. Needed for aws-auth.yaml
     Value: !GetAtt NodeInstanceRole.Arn
+ 
