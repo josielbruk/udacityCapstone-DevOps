@@ -24,9 +24,9 @@ jobs:
             checkLintBlue=`stat --printf="%s"  docker_lint_blue.txt
                     
             if [ "$checkLintBlue" -gexit "0" ]
-              then
-                  echo "Error"
-                  exit 1
+            then
+                echo "Error"
+                exit 1
             else
                 echo "Blue Environment Successful"
             fi
