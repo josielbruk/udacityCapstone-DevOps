@@ -1,5 +1,9 @@
 [
 	{
+		"ParameterKey": "StackName",
+		"ParameterValue": "UdacityCapStoneJosiel"
+	},
+	{
 		"ParameterKey": "Subnets",
 		"ParameterValue": "subnet-0347e129d02411b08, subnet-0b0d6d4d7d1a3e614, subnet-0a76ed79c2af0e592"
 	},

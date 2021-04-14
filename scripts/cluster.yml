@@ -1,4 +1,8 @@
 Parameters:
+  StackName:
+    Type: String
+    Description: The name of the Stack.
+
   ClusterName:
     Description: The name of the cluster.
     Type: String
@@ -46,4 +50,4 @@ Outputs:
     Description: The Kubernetes Cluster Name
     Value: !Ref KubernetesCluster
     Export:
-      Name: !Sub "UdacityCapStoneJosiel-Cluster"
+      Name: !Sub "${StackName}-Cluster"
