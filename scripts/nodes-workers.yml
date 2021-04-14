@@ -1,4 +1,13 @@
 Parameters:
+  BootstrapArguments:
+    Type: String
+    Default: ""
+    Description: "Arguments to pass to the bootstrap script. See files/bootstrap.sh in https://github.com/awslabs/amazon-eks-ami"
+
+  ClusterControlPlaneSecurityGroup:
+    Type: "AWS::EC2::SecurityGroup::Id"
+    Description: The security group of the cluster control plane.
+    
   KeyName:
     Description: The EC2 Key Pair to allow SSH access to the instances
     Type: AWS::EC2::KeyPair::KeyName
@@ -118,7 +127,7 @@ Metadata:
           - NodeImageId
           - NodeVolumeSize
           - KeyName
-          - OnDemandBootstrapArguments
+          - BootstrapArguments
       - Label:
           default: "Worker Network Configuration"
         Parameters:
@@ -150,6 +159,7 @@ Resources:
         - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
         - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
         - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+      Path: "/"
       Policies:
         - PolicyName: ClusterAutoscaler
           PolicyDocument:
@@ -252,7 +262,7 @@ Resources:
       VPCZoneIdentifier: !Ref Subnets
       Tags:
         - Key: Name
-          Value: !Sub "${ClusterName}-Node"
+          Value: !Sub "${ClusterName}-${OnDemandNodeGroupName}-Node"
           PropagateAtLaunch: "true"
         - Key: !Sub "kubernetes.io/cluster/${ClusterName}"
           Value: "owned"
